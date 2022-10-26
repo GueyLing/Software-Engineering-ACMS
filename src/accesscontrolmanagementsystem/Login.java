@@ -4,12 +4,14 @@
  */
 package accesscontrolmanagementsystem;
 
+import java.awt.HeadlessException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import java.sql.*;
 import project.Select;
 
 /**
+ * Login Page
  *
  * @author GueyLing
  */
@@ -39,9 +41,9 @@ public class Login extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        signUpLink = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,18 +60,6 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setText("Password:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -79,26 +69,21 @@ public class Login extends javax.swing.JFrame {
         jLabel5.setText("Email:");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Visitor", "Security Guard", "Security Officer", "Admin" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
 
-        jButton1.setText("Login\n");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        loginButton.setText("Login\n");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                loginButtonActionPerformed(evt);
             }
         });
 
         jLabel6.setText("Don't have an account?");
 
-        jLabel8.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel8.setText("Create a visitor account");
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        signUpLink.setForeground(new java.awt.Color(51, 51, 255));
+        signUpLink.setText("Create a visitor account");
+        signUpLink.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
+                signUpLinkMouseClicked(evt);
             }
         });
 
@@ -124,13 +109,13 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(290, 290, 290)
-                        .addComponent(jButton1))
+                        .addComponent(loginButton))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(260, 260, 260)
                         .addComponent(jLabel6))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(260, 260, 260)
-                        .addComponent(jLabel8))
+                        .addComponent(signUpLink))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(210, 210, 210)
                         .addComponent(jLabel1))
@@ -158,11 +143,11 @@ public class Login extends javax.swing.JFrame {
                 .addGap(45, 45, 45)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
-                .addComponent(jButton1)
+                .addComponent(loginButton)
                 .addGap(15, 15, 15)
                 .addComponent(jLabel6)
                 .addGap(5, 5, 5)
-                .addComponent(jLabel8))
+                .addComponent(signUpLink))
             .addGroup(layout.createSequentialGroup()
                 .addGap(40, 40, 40)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -182,69 +167,75 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * When the login button is clicked, verify users and direct them to the corresponding page
+     *
+     * @param evt
+     */
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 
         String email = jTextField1.getText();
         String password = jTextField2.getText();
-        String userType = (String)jComboBox1.getSelectedItem();
+        String userType = (String) jComboBox1.getSelectedItem();
         userType = userType.toLowerCase();
-        if (email.equals("") || password.equals("")){
+        //make sure users enter all the fields
+        if (email.equals("") || password.equals("")) {
             JOptionPane.showMessageDialog(null, "Please enter all the fields.");
-        }else{
-            ResultSet rs = Select.getData("select * from users where email='"+email+"' and password='"+password+"'and userType='"+userType+"'");
-            try{
-                if(rs.next()){
-                    if (rs.getString(5).equals("visitor")){
-                        String id = rs.getString("id");
-                        int user_id = Integer.parseInt(id);  
-                        setVisible(false);
-                        VisitorHome jf= new VisitorHome();
-                        jf.setVisible(true);
-                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                        jf.user_id = user_id;
-                    }else if(rs.getString(5).equals("security guard")){
-                        setVisible(false);
-                        JFrame jf= new SecurityGuardHome();
-                        jf.setVisible(true);
-                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    }else if(rs.getString(5).equals("security officer")){
-                        setVisible(false);
-                        JFrame jf= new SecurityOfficerHome();
-                        jf.setVisible(true);
-                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    }else{
-                        setVisible(false);
-                        JFrame jf= new AdminHome();
-                        jf.setVisible(true);
-                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        } else {
+            ResultSet rs = Select.getData("select * from users where email='" + email + "' and password='" + password + "'and userType='" + userType + "'");
+            try {
+                // if validated (correct email and password)
+                if (rs.next()) {
+                    // direct users to the page based on their roles
+                    switch (rs.getString(5)) {
+                        case "visitor":
+                            String id = rs.getString("id");
+                            int user_id = Integer.parseInt(id);
+                            setVisible(false);
+                            VisitorHome jf = new VisitorHome();
+                            jf.setVisible(true);
+                            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            jf.user_id = user_id;
+                            break;
+                        case "security guard":
+                            setVisible(false);
+//                        JFrame jf= new SecurityGuardHome();
+//                        jf.setVisible(true);
+//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            break;
+                        case "security officer":
+                            setVisible(false);
+//                        JFrame jf= new SecurityOfficerHome();
+//                        jf.setVisible(true);
+//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            break;
+                        default:
+                            setVisible(false);
+//                        JFrame jf= new AdminHome();
+//                        jf.setVisible(true);
+//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            break;
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid credentials.");
                 }
-                
-            }catch(Exception e){
+
+            } catch (HeadlessException | NumberFormatException | SQLException e) {
                 JOptionPane.showMessageDialog(null, e);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_loginButtonActionPerformed
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-            JFrame jf= new SignUp();
-            jf.setVisible(true);
-            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jLabel8MouseClicked
+    /**
+     * Hyperlink to direct users to the sign up page
+     *
+     * @param evt
+     */
+    private void signUpLinkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_signUpLinkMouseClicked
+        JFrame jf = new SignUp();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_signUpLinkMouseClicked
 
     /**
      * @param args the command line arguments
@@ -274,17 +265,14 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new Login();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new Login();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -293,10 +281,11 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JButton loginButton;
+    private javax.swing.JLabel signUpLink;
     // End of variables declaration//GEN-END:variables
 }

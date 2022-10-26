@@ -14,7 +14,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- *
+ * Visitor Home Page (Allows them to submit application for visit pass)
  * @author GueyLing
  */
 public class VisitorHome extends javax.swing.JFrame {
@@ -41,7 +41,7 @@ public class VisitorHome extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        ticketHistoryPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -51,7 +51,7 @@ public class VisitorHome extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        submitButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -76,18 +76,18 @@ public class VisitorHome extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 290, 50));
 
-        jPanel4.setBackground(new java.awt.Color(153, 204, 255));
-        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        ticketHistoryPanel.setBackground(new java.awt.Color(153, 204, 255));
+        ticketHistoryPanel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel4MouseClicked(evt);
+                ticketHistoryPanelMouseClicked(evt);
             }
         });
 
         jLabel3.setText("Ticket History");
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jPanel4.add(jLabel3);
+        ticketHistoryPanel.add(jLabel3);
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 290, 50));
+        jPanel1.add(ticketHistoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 290, 50));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -95,12 +95,6 @@ public class VisitorHome extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setText("Apply Visit Pass");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
         jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 590, -1));
 
         jLabel6.setText("Image URL (Please upload the latest picture of yourself for authentication purpose):");
@@ -118,13 +112,13 @@ public class VisitorHome extends javax.swing.JFrame {
         jLabel10.setText("Reason:");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 420, -1, -1));
 
-        jButton1.setText("Submit");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        submitButton.setText("Submit");
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 560, -1, -1));
+        jPanel2.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 560, -1, -1));
 
         jLabel11.setText("* DISCLAIMER:  Your access will be denied if you are more than 30 minutes late.");
         jLabel11.setForeground(new java.awt.Color(255, 0, 0));
@@ -162,7 +156,11 @@ public class VisitorHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Submit the application for the security officer to review
+     * @param evt 
+     */
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         String imageUrl = jTextField1.getText();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String date = df.format(jDateChooser1.getDate());
@@ -171,11 +169,12 @@ public class VisitorHome extends javax.swing.JFrame {
         String reason = jTextArea1.getText();
         String status = "pending";
         
+        // Make sure the users enter all the fields
         if(imageUrl.equals("")||date.equals("")||bookFrom.equals("")||bookTo.equals("")||reason.equals("")){
             JOptionPane.showMessageDialog(null, "Please enter all the fields.");
         }else{
             String Query;
-            Query = "insert into visit_ticket values('"+imageUrl+"','"+date+"','"+bookFrom+"','"+bookTo+"','"+reason+"','"+status+"','0' ,'"+user_id+"','')";
+            Query = "insert into visit_ticket values('"+imageUrl+"','"+date+"','"+bookFrom+"','"+bookTo+"','"+reason+"','"+status+"','0' ,'"+user_id+"','','0','')";
             InsertUpdateDelete.setData(Query, "Submitted Successfully");
             setVisible(false);
             VisitorTicketHistory jf= new VisitorTicketHistory();
@@ -183,19 +182,19 @@ public class VisitorHome extends javax.swing.JFrame {
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);  
             jf.user_id = user_id;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_submitButtonActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+    /**
+     * Direct users to view their application tickets and status
+     * @param evt 
+     */
+    private void ticketHistoryPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ticketHistoryPanelMouseClicked
       setVisible(false);
       VisitorTicketHistory jf= new VisitorTicketHistory();
       jf.setVisible(true);
       jf.setExtendedState(JFrame.MAXIMIZED_BOTH);  
       jf.user_id = user_id;
-    }//GEN-LAST:event_jPanel4MouseClicked
+    }//GEN-LAST:event_ticketHistoryPanelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -225,17 +224,14 @@ public class VisitorHome extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new VisitorHome();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf= new VisitorHome();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -250,10 +246,11 @@ public class VisitorHome extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton submitButton;
+    private javax.swing.JPanel ticketHistoryPanel;
     private com.github.lgooddatepicker.components.TimePicker timePicker3;
     private com.github.lgooddatepicker.components.TimePicker timePicker4;
     // End of variables declaration//GEN-END:variables
