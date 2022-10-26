@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import project.InsertUpdateDelete;
 
 /**
- *
+ * Sign Up Page (Create new visitor account)
  * @author GueyLing
  */
 public class SignUp extends javax.swing.JFrame {
@@ -38,7 +38,7 @@ public class SignUp extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        signUpButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
@@ -69,13 +69,13 @@ public class SignUp extends javax.swing.JFrame {
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, -1, -1));
         jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 397, 449, -1));
 
-        jButton1.setText("Sign Up");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        signUpButton.setText("Sign Up");
+        signUpButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                signUpButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 550, -1, -1));
+        jPanel2.add(signUpButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 550, -1, -1));
 
         jLabel7.setText("IC Number:");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, -1, -1));
@@ -105,7 +105,11 @@ public class SignUp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    /**
+     * Get information from users and create a new visitor account
+     * @param evt 
+     */
+    private void signUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signUpButtonActionPerformed
         String name = jTextField5.getText();
         String phoneNo = jTextField3.getText();
         String email = jTextField1.getText();
@@ -113,6 +117,7 @@ public class SignUp extends javax.swing.JFrame {
         String icNo = jTextField2.getText();
         String userType = "visitor";
         
+        // Make sure the users enter all the fields
         if(name.equals("")||phoneNo.equals("")||email.equals("")||password.equals("")||icNo.equals("")){
             JOptionPane.showMessageDialog(null, "Please enter all the fields.");
         }else{
@@ -122,7 +127,7 @@ public class SignUp extends javax.swing.JFrame {
             setVisible(false);
         }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_signUpButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,17 +157,14 @@ public class SignUp extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SignUp();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf= new SignUp();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -177,5 +179,6 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton signUpButton;
     // End of variables declaration//GEN-END:variables
 }
