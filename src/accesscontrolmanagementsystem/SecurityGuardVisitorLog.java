@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 /**
  *
- * @author Asus
+ * @author GueyLing
  */
 public class SecurityGuardVisitorLog extends javax.swing.JFrame {
 
