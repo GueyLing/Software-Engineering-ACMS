@@ -70,11 +70,11 @@ public class SecurityOfficerPending extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Ticket No.", "Name", "Phone No.", "Reason", "Apply Date", "Booking Date", "Book In", "Book Out"
+                "Ticket No.", "Name", "Phone No.", "Reason", "Booking Date", "Book In", "Book Out"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -83,6 +83,11 @@ public class SecurityOfficerPending extends javax.swing.JFrame {
         });
         jTable1.setColumnSelectionAllowed(true);
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable1);
         jTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -174,13 +179,13 @@ public class SecurityOfficerPending extends javax.swing.JFrame {
         String id=textField1.getText();
         ResultSet rs = Select.getData("SELECT visit_ticket.date, visit_ticket.bookFrom, "
                 + "visit_ticket.bookTo, visit_ticket.reason, visit_ticket.id, users.name, "
-                + "users.phoneNo FROM visit_ticket, users WHERE visit_ticket.user_id = users.id ;"
-                + "visit_ticket.id LIKE '"+id+"'");
+                + "users.phoneNo FROM visit_ticket, users WHERE visit_ticket.user_id = users.id AND "
+                + "visit_ticket.id = '"+id+"'");
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         model.setRowCount(0);
         try{
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(1), rs.getString(2), rs.getString(3)});
+                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(2), rs.getString(3)});
             }
             rs.close();
         }
@@ -212,7 +217,7 @@ public class SecurityOfficerPending extends javax.swing.JFrame {
         model.setRowCount(0);
         try{
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(1), rs.getString(2), rs.getString(3)});
+                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(2), rs.getString(3)});
             }
             rs.close();
         }
@@ -220,6 +225,20 @@ public class SecurityOfficerPending extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int response = JOptionPane.showConfirmDialog(this, "Would you approved this request?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        
+        //Display respone result
+        //if select yes
+        if(response==JOptionPane.YES_OPTION){
+            JOptionPane.showMessageDialog(null,"Approved.");
+        }
+        else if(response==JOptionPane.NO_OPTION){
+            JOptionPane.showMessageDialog(null, "Rejected.");
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
     
     /**
      * @param args the command line arguments

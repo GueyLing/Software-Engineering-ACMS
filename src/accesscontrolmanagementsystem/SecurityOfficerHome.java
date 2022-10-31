@@ -4,8 +4,11 @@
  */
 package accesscontrolmanagementsystem;
 
+import java.sql.ResultSet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import project.Select;
 
 
 /**
@@ -42,6 +45,11 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -93,19 +101,10 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"001 ", "Adeline", "012-675 9987", "siok", "10/8/2022", "24/8/2022 13:20pm", null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Ticket No.", "Name", "Phone No.", "Reason", "Apply Date", "Visit Date & Time", ""
+                "Ticket No.", "Name", "Phone No.", "Reason", "Booking Date", "Book In", "Book Out"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -123,15 +122,6 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
-            jTable1.getColumnModel().getColumn(6).setResizable(false);
-        }
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 640, 430));
 
@@ -180,6 +170,23 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Rejected.");
         }
     }//GEN-LAST:event_jTable1MouseClicked
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        ResultSet rs = Select.getData("SELECT visit_ticket.date, visit_ticket.bookFrom, "
+                + "visit_ticket.bookTo, visit_ticket.reason, visit_ticket.id, users.name, "
+                + "users.phoneNo FROM visit_ticket, users WHERE visit_ticket.user_id = users.id ;");
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
+        try{
+            while(rs.next()){
+                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(2), rs.getString(3)});
+            }
+            rs.close();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments

@@ -102,11 +102,11 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Ticket No.", "Name", "Phone No.", "Reason", "Apply Date", "Booking Date", "Book In", "Book Out"
+                "Ticket No.", "Name", "Phone No.", "Reason", "Booking Date", "Book In", "Book Out"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -174,6 +174,22 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
+        String id=textField1.getText();
+        ResultSet rs = Select.getData("SELECT visit_ticket.date, visit_ticket.bookFrom, "
+                + "visit_ticket.bookTo, visit_ticket.reason, visit_ticket.id, users.name, "
+                + "users.phoneNo FROM visit_ticket, users WHERE visit_ticket.user_id = users.id AND "
+                + "visit_ticket.id = '"+id+"'");
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
+        try{
+            while(rs.next()){
+                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(2), rs.getString(3)});
+            }
+            rs.close();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_button1ActionPerformed
 
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
@@ -192,7 +208,7 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
         model.setRowCount(0);
         try{
             while(rs.next()){
-                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(1), rs.getString(2), rs.getString(3)});
+                model.addRow(new Object[]{rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(4), rs.getString(1), rs.getString(2), rs.getString(3)});
             }
             rs.close();
         }
