@@ -4,10 +4,18 @@
  */
 package accesscontrolmanagementsystem;
 
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import project.Select;
 
 
@@ -158,15 +166,30 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel5MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        //Code for confirm dialog box (Approve/Reject)
-        int response = JOptionPane.showConfirmDialog(this, "Would you approved this request?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        //Code for confirm dialog box (Approve/Reject) 
+        int selectedRow = jTable1.getSelectedRow() 
+                + JOptionPane.showConfirmDialog(this, "Would you approved this request?", 
+                        "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        TableModel model = jTable1.getModel();
+        
+        int id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
         
         //Display respone result
-        //if select yes
-        if(response==JOptionPane.YES_OPTION){
-            JOptionPane.showMessageDialog(null,"Approved.");
+        //if select yes (error...)
+        if(selectedRow==JOptionPane.YES_OPTION){
+            try{
+                Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/acms","root","10082002");
+                Statement stmt = conn.createStatement();
+                String sql = "Update visit_ticket set status = 'approved' Where id= '"+id+"'";
+                stmt.executeUpdate(sql);
+                JOptionPane.showMessageDialog(null, "Approved."+id);
+            } catch (Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
+            
         }
-        else if(response==JOptionPane.NO_OPTION){
+        //if select no (In progress...)
+        if(selectedRow==JOptionPane.NO_OPTION){
             JOptionPane.showMessageDialog(null, "Rejected.");
         }
     }//GEN-LAST:event_jTable1MouseClicked
