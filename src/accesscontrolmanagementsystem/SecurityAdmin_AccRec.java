@@ -4,29 +4,22 @@
  */
 package accesscontrolmanagementsystem;
 
-import java.text.SimpleDateFormat; 
-import java.util.Date;
 import javax.swing.JFrame;
 import project.*;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.time.LocalTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+
 /**
  *
  * @author GueyLing
  */
-public class SecurityGuardVisitorLog extends javax.swing.JFrame {
+public class SecurityAdmin_AccRec extends javax.swing.JFrame {
 
     /**
-     * Creates new form SecurityGuardVisitorLog
+     * Creates new form SecurityAdmin_AccRec
      */
-    public SecurityGuardVisitorLog() {
+    public SecurityAdmin_AccRec() {
         initComponents();
     }
 
@@ -45,9 +38,11 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -63,20 +58,15 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
         jLabel1.setText("ACME COMPANY");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
 
-        jPanel3.setBackground(new java.awt.Color(153, 204, 255));
-        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel3MouseClicked(evt);
-            }
-        });
+        jPanel3.setBackground(new java.awt.Color(170, 215, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setText("Visitor List");
+        jLabel2.setText("Access Record");
         jPanel3.add(jLabel2);
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 290, 50));
 
-        jPanel4.setBackground(new java.awt.Color(170, 215, 255));
+        jPanel4.setBackground(new java.awt.Color(153, 204, 255));
         jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel4MouseClicked(evt);
@@ -84,7 +74,7 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setText("Visitor Log");
+        jLabel3.setText("Contigency Report");
         jPanel4.add(jLabel3);
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 290, 50));
@@ -93,39 +83,34 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setText("Visitor Log");
+        jLabel4.setText("Visitor Access Record");
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
+
+        jLabel6.setText("Search by month:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Months", "January", "February", "March", "April", "May", "June", "July ", "August", "September", "October", "November", "December" }));
+        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 160, 250, -1));
+
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Visitor", "Date", "Time In", "Time Out", "Check In", "Check Out"
+                "Visitor Name", "Phone Number", "Visit Date", "Enter Time", "Exit Time", "Reason"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, true, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jTable1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jTable1ComponentShown(evt);
-            }
-        });
+        ));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 850, 310));
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, -1, -1));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 610, 310));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -134,44 +119,32 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1310, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-
-    }//GEN-LAST:event_jPanel4MouseClicked
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jTable1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentShown
-
-    }//GEN-LAST:event_jTable1ComponentShown
-
-    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         setVisible(false);
-        SecurityGuardHome jf= new SecurityGuardHome();
+        SecurityAdmin_ContRec jf= new SecurityAdmin_ContRec();
         jf.setVisible(true);
         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-    }//GEN-LAST:event_jPanel3MouseClicked
+    }//GEN-LAST:event_jPanel4MouseClicked
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        ResultSet rs = Select.getData("select * from visit_status s JOIN users t1 ON t1.id = s.enter_time_guard_id JOIN users t2 "
-                + "ON t2.id = s.exit_time_guard_id JOIN visit_ticket v ON v.id = s.ticket_id JOIN users t3 on t3.id = v.user_id where s.status = 'checked out' ");
+        // TODO add your handling code here:
+        ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' ");
         DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
         model.setRowCount(0);
         try{
         while(rs.next()){
-            model.addRow(new Object[]{rs.getString(33), rs.getString(23), rs.getString(3), rs.getString(4), rs.getString(8), rs.getString(15)});
+            model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
         }
         rs.close();
         }
@@ -179,6 +152,56 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int no = 0;
+        String month = jComboBox1.getSelectedItem().toString();
+        ResultSet rs;
+        if (month.equals("All Months")){
+        rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out'");
+        }else{
+        if (month.equals("January")){
+            no = 1;
+        }else if (month.equals("February")){
+            no = 2;
+        }else if (month.equals("March")){
+            no = 3;
+        }else if (month.equals("April")){
+            no = 4;
+        }else if (month.equals("May")){
+            no = 5;
+        }else if (month.equals("June")){
+            no = 6;
+        }else if (month.equals("July")){
+            no = 7;
+        }else if (month.equals("August")){
+            no = 8;
+        }else if (month.equals("September")){
+            no = 9;
+        }else if (month.equals("October")){
+            no = 10;
+        }else if (month.equals("November")){
+            no = 11;
+        }else{
+            no = 12;
+        }
+        rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND month(str_to_date(date, '%Y-%m-%d')) = "+no+" ");
+        }
+        
+        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
+        try{
+        while(rs.next()){
+            model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
+        }
+        rs.close();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -197,20 +220,20 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SecurityGuardVisitorLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecurityAdmin_AccRec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SecurityGuardVisitorLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecurityAdmin_AccRec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SecurityGuardVisitorLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecurityAdmin_AccRec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SecurityGuardVisitorLog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecurityAdmin_AccRec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame jf= new SecurityGuardVisitorLog();
+                JFrame jf= new SecurityAdmin_AccRec();
                 jf.setVisible(true);
                 jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
             }
@@ -218,11 +241,13 @@ public class SecurityGuardVisitorLog extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

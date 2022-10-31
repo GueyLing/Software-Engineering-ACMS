@@ -37,4 +37,29 @@ public class InsertUpdateDelete {
         
         
     }
+    
+    public static void setDataWithoutJOption(String Query){
+        Connection con = null;
+        Statement st = null;
+        try{
+            con = ConnectionProvider.getCon();
+            st = con.createStatement();
+            st.executeUpdate(Query);
+            
+       
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        finally{
+            try{
+            
+        }catch(Exception e){
+            
+        }
+            
+        }
+        
+        
+    }
 }

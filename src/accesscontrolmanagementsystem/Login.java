@@ -199,21 +199,21 @@ public class Login extends javax.swing.JFrame {
                             break;
                         case "security guard":
                             setVisible(false);
-//                        JFrame jf= new SecurityGuardHome();
-//                        jf.setVisible(true);
-//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        JFrame jf2= new SecurityGuardHome();
+                        jf2.setVisible(true);
+                        jf2.setExtendedState(JFrame.MAXIMIZED_BOTH);
                             break;
                         case "security officer":
                             setVisible(false);
-//                        JFrame jf= new SecurityOfficerHome();
-//                        jf.setVisible(true);
-//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        JFrame jf3= new SecurityOfficerHome();
+                        jf3.setVisible(true);
+                        jf3.setExtendedState(JFrame.MAXIMIZED_BOTH);
                             break;
                         default:
                             setVisible(false);
-//                        JFrame jf= new AdminHome();
-//                        jf.setVisible(true);
-//                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                        JFrame jf4= new SecurityAdmin_AccRec();
+                        jf4.setVisible(true);
+                        jf4.setExtendedState(JFrame.MAXIMIZED_BOTH);
                             break;
                     }
                 } else {
