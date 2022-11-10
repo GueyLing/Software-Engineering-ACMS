@@ -17,6 +17,8 @@ import project.Select;
  */
 public class Login extends javax.swing.JFrame {
 
+    boolean successStatus = false;
+
     /**
      * Creates new form Login
      */
@@ -198,24 +200,31 @@ public class Login extends javax.swing.JFrame {
                             jf.user_id = user_id;
                             break;
                         case "security guard":
+                            String id1 = rs.getString("id");   
+                            int user_id1 = Integer.parseInt(id1);
                             setVisible(false);
-                        JFrame jf2= new SecurityGuardHome();
-                        jf2.setVisible(true);
-                        jf2.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            SecurityGuardHome jf2 = new SecurityGuardHome();
+                            jf2.setVisible(true);
+                            jf2.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            jf2.user_id = user_id1;
                             break;
                         case "security officer":
+                            String id2 = rs.getString("id");
+                            int user_id2 = Integer.parseInt(id2);
                             setVisible(false);
-                        JFrame jf3= new SecurityOfficerHome();
-                        jf3.setVisible(true);
-                        jf3.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            SecurityOfficerHome jf3 = new SecurityOfficerHome();
+                            jf3.setVisible(true);
+                            jf3.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            jf3.user_id = user_id2;
                             break;
                         default:
                             setVisible(false);
-                        JFrame jf4= new SecurityAdmin_AccRec();
-                        jf4.setVisible(true);
-                        jf4.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                            JFrame jf4 = new SecurityAdmin_AccRec();
+                            jf4.setVisible(true);
+                            jf4.setExtendedState(JFrame.MAXIMIZED_BOTH);
                             break;
                     }
+                    successStatus = true;
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid credentials.");
                 }
@@ -283,9 +292,9 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JButton loginButton;
+    javax.swing.JTextField jTextField1;
+    javax.swing.JTextField jTextField2;
+    javax.swing.JButton loginButton;
     private javax.swing.JLabel signUpLink;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,27 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package accesscontrolmanagementsystem;
+
 import java.sql.ResultSet;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import project.Select;
+
 /**
+ * View approved history
  *
  * @author GueyLing
  */
 public class SecurityOfficerApproved extends javax.swing.JFrame {
 
-    
     public int user_id;
-    
+
     /**
      * Creates new form SecurityOfficerApproved
      */
@@ -51,6 +47,10 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1640, 1000));
@@ -94,11 +94,6 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 290, 50));
 
         jPanel5.setBackground(new java.awt.Color(170, 215, 255));
-        jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel5MouseClicked(evt);
-            }
-        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Approved History");
@@ -121,20 +116,30 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
                 "Ticket No.", "Name", "Visit Date", "Approved By", "Approved Date"
             }
         ));
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable1MouseClicked(evt);
-            }
-        });
-        jTable1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jTable1ComponentShown(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 850, 310));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 850, 310));
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, -1, -1));
+
+        jLabel7.setText("Search by Ticket No. / Name:");
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, -1, -1));
+        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, 420, -1));
+
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 140, -1, -1));
+
+        jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 140, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,49 +159,87 @@ public class SecurityOfficerApproved extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Direct users to the home page
+     *
+     * @param evt
+     */
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-      setVisible(false);
-      SecurityOfficerHome jf= new SecurityOfficerHome();
-      jf.setVisible(true);
-      jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-      jf.user_id = user_id;
+        setVisible(false);
+        SecurityOfficerHome jf = new SecurityOfficerHome();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jf.user_id = user_id;
     }//GEN-LAST:event_jPanel3MouseClicked
 
+    /**
+     * Direct users to view the pending requests
+     *
+     * @param evt
+     */
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-      setVisible(false);
-      SecurityOfficerPending jf= new SecurityOfficerPending();
-      jf.setVisible(true);
-      jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-      jf.user_id = user_id;
+        setVisible(false);
+        SecurityOfficerPending jf = new SecurityOfficerPending();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jf.user_id = user_id;
     }//GEN-LAST:event_jPanel4MouseClicked
 
-    private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel5MouseClicked
-
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jTable1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentShown
-
-    }//GEN-LAST:event_jTable1ComponentShown
-
+    /**
+     * Display the approved history
+     *
+     * @param evt
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-ResultSet rs = Select.getData("select * from visit_ticket s JOIN users t1 ON t1.id = s.user_id JOIN users t2 "
-                + "ON t2.id = s.approved_officer_id");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        ResultSet rs = Select.getData("select * from visit_ticket s JOIN users t1 ON t1.id = s.user_id JOIN users t2 "
+                + "ON t2.id = s.approved_officer_id WHERE s.status = 'approved'");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-        while(rs.next()){
-            model.addRow(new Object[]{rs.getString(7), rs.getString(12), rs.getString(2), rs.getString(19), rs.getString(11)});
-        }
-        rs.close();
-        }
-        catch(Exception e){
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(7), rs.getString(12), rs.getString(2), rs.getString(19), rs.getString(11)});
+            }
+            rs.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
-        }        
+        }
     }//GEN-LAST:event_formComponentShown
+
+    /**
+     * Refresh the page
+     *
+     * @param evt
+     */
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        setVisible(false);
+        JFrame jf = new SecurityOfficerApproved();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    /**
+     * Filter the records based on ticket id or visitor name
+     *
+     * @param evt
+     */
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ResultSet rs;
+        String query = jTextField1.getText();
+        rs = Select.getData("select * from visit_ticket s JOIN users t1 ON t1.id = s.user_id JOIN users t2 "
+                + "ON t2.id = s.approved_officer_id WHERE s.id LIKE '%" + query + "%' or t1.name LIKE '%" + query + "%' AND s.status = 'approved'");
+
+        // show results
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(7), rs.getString(12), rs.getString(2), rs.getString(19), rs.getString(11)});
+            }
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,34 +257,31 @@ ResultSet rs = Select.getData("select * from visit_ticket s JOIN users t1 ON t1.
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SecurityOfficerApproved.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SecurityOfficerApproved.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SecurityOfficerApproved.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(SecurityOfficerApproved.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SecurityOfficerApproved();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new SecurityOfficerApproved();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -249,5 +289,6 @@ ResultSet rs = Select.getData("select * from visit_ticket s JOIN users t1 ON t1.
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

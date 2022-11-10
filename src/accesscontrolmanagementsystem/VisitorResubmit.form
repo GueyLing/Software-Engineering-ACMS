@@ -66,11 +66,11 @@
                           </Group>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" pref="192" max="-2" attributes="0"/>
                           <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jDateChooser1" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jScrollPane1" alignment="0" min="-2" pref="452" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" pref="565" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
@@ -119,6 +119,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Reason"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
@@ -126,6 +129,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -135,6 +141,7 @@
         <Component class="com.toedter.calendar.JDateChooser" name="jDateChooser1">
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="LocalDate localDate = LocalDate.now();&#xa;LocalDate visitDate = localDate.plusDays(7);    &#xa;Date date = Date.from(visitDate.atStartOfDay(ZoneId.systemDefault()).toInstant());&#xa;jDateChooser1.getJCalendar().setMinSelectableDate(date);"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -143,6 +150,9 @@
           </Properties>
         </Component>
         <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
@@ -150,13 +160,16 @@
           </Properties>
         </Component>
         <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker2">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="* DISCLAIMER:  Your access will be denied if you are more than 30 minutes late."/>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="33" green="33" red="ff" type="rgb"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="* DISCLAIMER:  Your access will be denied if you are more than 30 minutes late."/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -176,6 +189,9 @@
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -186,6 +202,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="submitButtonActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="cancelButton">
           <Properties>

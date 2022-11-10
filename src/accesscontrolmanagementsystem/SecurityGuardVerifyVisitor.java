@@ -13,10 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import project.InsertUpdateDelete;
 /**
- *
+ * Allow security to verify users and perform check in / check out
  * @author GueyLing
  */
 public class SecurityGuardVerifyVisitor extends javax.swing.JFrame {
@@ -34,7 +33,7 @@ public int user_id;
     }
     
     void set_button_text(String text){
-        String buttonText = "";
+        String buttonText;
         if(text.equals("not yet arrive"))
             buttonText = "Check In";
         else
@@ -42,12 +41,19 @@ public int user_id;
         jButton1.setText(buttonText);
     }
     
+    /**
+     * Display visitor image for verification
+     * @param imageUrl image link to the visitor's picture
+     * @throws MalformedURLException
+     * @throws IOException 
+     */
     void set_image(String imageUrl) throws MalformedURLException, IOException{
-        Image image = null;
+        Image image;
         try {
             URL url = new URL(imageUrl);
             image = ImageIO.read(url);
         } catch (IOException e) {
+            // If image cannot be rendered, display image not found
             URL url2 = new URL("https://comnplayscience.eu/app/images/notfound.png");
             image = ImageIO.read(url2);
         }
@@ -140,13 +146,19 @@ public int user_id;
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Allow security guard to check in or check out visitor
+     * @param evt 
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // get current time
         Date date = new Date();        
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mma");
         String time = timeFormatter.format(date).toLowerCase();
         String Query = null;
-        String status = jButton1.getText().toString().toLowerCase();
-        String dbStatus = "";
+        String status = jButton1.getText().toLowerCase();
+        String dbStatus;
+        // check in, check out and capture current time
         if (status.equals("check in")){
             dbStatus = "checked in";
             Query = "update visit_status set status = '"+dbStatus+"', enter_time = '"+time+"', enter_time_guard_id = '"+user_id+"' where ticket_id = "+ticket_id+" ";
@@ -165,11 +177,16 @@ public int user_id;
         jf1.user_id = user_id;
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * Direct users back to the previous page
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         setVisible(false);
         SecurityGuardHome jf1= new SecurityGuardHome();
         jf1.setVisible(true);
         jf1.setExtendedState(JFrame.MAXIMIZED_BOTH);  
+        jf1.user_id = user_id;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -201,10 +218,8 @@ public int user_id;
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SecurityGuardVerifyVisitor().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new SecurityGuardVerifyVisitor().setVisible(true);
         });
     }
 

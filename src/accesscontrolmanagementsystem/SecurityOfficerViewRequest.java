@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,44 +16,53 @@ import javax.swing.JOptionPane;
 import project.InsertUpdateDelete;
 
 /**
+ * JFrame to approve or reject visit pass
  *
  * @author GueyLing
  */
 public class SecurityOfficerViewRequest extends javax.swing.JFrame {
-    
+
     public int ticket_id;
     public int user_id;
     public int returnPage;
-    
-    void name(String name){
-        jLabel1.setText("Name: "+name);
+
+    void name(String name) {
+        jLabel1.setText("Name: " + name);
     }
-    
-    void date(String date){
-        jLabel3.setText("Date: "+date);
+
+    void date(String date) {
+        jLabel3.setText("Date: " + date);
     }
-    
-    void time(String fromTime, String toTime){
-        jLabel4.setText("Time: "+fromTime+" - "+toTime);
+
+    void time(String fromTime, String toTime) {
+        jLabel4.setText("Time: " + fromTime + " - " + toTime);
     }
-    
-    void reason(String reason){
-        jLabel5.setText("Reason: "+reason);
+
+    void reason(String reason) {
+        jLabel5.setText("Reason: " + reason);
     }
-    
-    void set_image(String imageUrl) throws MalformedURLException, IOException{
-        Image image = null;
+
+    /**
+     * display image for security officer to verify the visitor
+     *
+     * @param imageUrl image link to the visitor's picture
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    void set_image(String imageUrl) throws MalformedURLException, IOException {
+        Image image;
         try {
             URL url = new URL(imageUrl);
             image = ImageIO.read(url);
         } catch (IOException e) {
+            // if unable to render image, display image not found
             URL url2 = new URL("https://comnplayscience.eu/app/images/notfound.png");
             image = ImageIO.read(url2);
         }
-        
+
         ImageIcon imageIcon = new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(200, 250, Image.SCALE_DEFAULT));
         jLabel2.setIcon(imageIcon);
-       
+
     }
 
     /**
@@ -183,57 +190,76 @@ public class SecurityOfficerViewRequest extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Allow security officer to reject request
+     *
+     * @param evt
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Once the security officer reject the request, JOptionPane is displayed to input reject reason
         String reason = JOptionPane.showInputDialog("Rejected reason ");
         String Query;
-        if(reason!=null){
-        Query = "update visit_ticket set approved_officer_id = "+user_id+", status = 'rejected', rejected_reason = '"+reason+"' where id='"+ticket_id+"'";
-        InsertUpdateDelete.setData(Query, "Rejected Successfully");
-        setVisible(false);
-        if (returnPage == 0){
-        SecurityOfficerHome jf= new SecurityOfficerHome();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;}else{
-        SecurityOfficerPending jf= new SecurityOfficerPending();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;
-        }
+        if (reason != null) {
+            Query = "update visit_ticket set approved_officer_id = " + user_id + ", status = 'rejected', rejected_reason = '" + reason + "' where id='" + ticket_id + "'";
+            InsertUpdateDelete.setData(Query, "Rejected Successfully");
+            setVisible(false);
+            if (returnPage == 0) {
+                SecurityOfficerHome jf = new SecurityOfficerHome();
+                jf.setVisible(true);
+                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                jf.user_id = user_id;
+            } else {
+                SecurityOfficerPending jf = new SecurityOfficerPending();
+                jf.setVisible(true);
+                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                jf.user_id = user_id;
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    /**
+     * Return back to previous page
+     *
+     * @param evt
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       setVisible(false);
-        if (returnPage == 0){
-        SecurityOfficerHome jf= new SecurityOfficerHome();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;
-        }else{
-        SecurityOfficerPending jf= new SecurityOfficerPending();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;
+        setVisible(false);
+        if (returnPage == 0) {
+            SecurityOfficerHome jf = new SecurityOfficerHome();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            jf.user_id = user_id;
+        } else {
+            SecurityOfficerPending jf = new SecurityOfficerPending();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            jf.user_id = user_id;
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    /**
+     * Allow security officer to approve request
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String now = new SimpleDateFormat("yyyy-MM-dd HH:mma").format(new java.util.Date());
-        String Query;
-        Query = "update visit_ticket set approved_officer_id = "+user_id+", status = 'approved', approved_time = '"+now+"' where id='"+ticket_id+"'";
+        String Query, Query2;
+        Query = "update visit_ticket set approved_officer_id = " + user_id + ", status = 'approved', approved_time = '" + now + "' where id='" + ticket_id + "'";
+        Query2 = "insert into visit_status (status, ticket_id) values ('not yet arrive', " + ticket_id + ")";
         InsertUpdateDelete.setData(Query, "Approved Successfully");
+        InsertUpdateDelete.setDataWithoutJOption(Query2);
         setVisible(false);
-        if (returnPage == 0){
-        SecurityOfficerHome jf= new SecurityOfficerHome();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;
-        }else{
-        SecurityOfficerPending jf= new SecurityOfficerPending();
-        jf.setVisible(true);
-        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        jf.user_id = user_id;
+        if (returnPage == 0) {
+            SecurityOfficerHome jf = new SecurityOfficerHome();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            jf.user_id = user_id;
+        } else {
+            SecurityOfficerPending jf = new SecurityOfficerPending();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            jf.user_id = user_id;
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -265,10 +291,8 @@ public class SecurityOfficerViewRequest extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SecurityOfficerViewRequest().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new SecurityOfficerViewRequest().setVisible(true);
         });
     }
 
