@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -8,9 +10,11 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+
   <Events>
     <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentShown"/>
   </Events>
+
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -31,6 +35,7 @@
               <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
               <Component id="jPanel2" pref="1310" max="32767" attributes="0"/>
           </Group>
+
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -297,4 +302,5 @@
       </SubComponents>
     </Container>
   </SubComponents>
+
 </Form>

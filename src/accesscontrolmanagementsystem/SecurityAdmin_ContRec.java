@@ -14,7 +14,8 @@ import javax.swing.table.DefaultTableModel;
 /**
  * View contingency report ACMS
  *
- * @author GueyLing
+ * @author Asus
+
  */
 public class SecurityAdmin_ContRec extends javax.swing.JFrame {
 
@@ -141,6 +142,7 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -150,6 +152,7 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+
         );
 
         pack();
@@ -279,6 +282,7 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
             JFrame jf = new SecurityAdmin_ContRec();
             jf.setVisible(true);
             jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         });
     }
 
@@ -302,5 +306,6 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private com.github.lgooddatepicker.components.TimePicker timePicker1;
     private com.github.lgooddatepicker.components.TimePicker timePicker2;
+
     // End of variables declaration//GEN-END:variables
 }

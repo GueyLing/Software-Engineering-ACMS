@@ -194,6 +194,7 @@
                     <Column editable="true" title="IC No." type="java.lang.Object"/>
                     <Column editable="true" title="Visit Date" type="java.lang.Object"/>
                     <Column editable="true" title="Status" type="java.lang.Object"/>
+
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -228,14 +229,17 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
+
                   </TableColumnModel>
                 </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+
                 </Property>
               </Properties>
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable1MouseClicked"/>
+
               </Events>
             </Component>
           </SubComponents>
@@ -247,6 +251,7 @@
             </Constraint>
           </Constraints>
         </Component>
+
       </SubComponents>
     </Container>
   </SubComponents>
