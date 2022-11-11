@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * View access record
+ * View access record ACMS
  *
  * @author GueyLing
  */

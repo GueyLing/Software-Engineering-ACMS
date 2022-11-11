@@ -20,7 +20,7 @@ import javax.swing.table.TableModel;
 import project.Select;
 
 /**
- * Home page of security officer. View reminder of unhandled requests.
+ * Home page of security officer. View reminder of unhandled requests. ACMS
  * @author GueyLing
  */
 public class SecurityOfficerHome extends javax.swing.JFrame {

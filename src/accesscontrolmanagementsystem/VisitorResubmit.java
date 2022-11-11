@@ -13,7 +13,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * Window to allow users to resubmit their application once rejected by the security officer
+ * Window to allow users to resubmit their application once rejected by the security officer. ACMS
  * @author GueyLing
  */
 public class VisitorResubmit extends javax.swing.JFrame {

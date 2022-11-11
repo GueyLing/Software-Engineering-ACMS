@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import project.Select;
 
 /**
- * View approved history
+ * View approved history ACMS
  *
  * @author GueyLing
  */

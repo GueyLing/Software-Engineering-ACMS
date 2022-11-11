@@ -14,7 +14,7 @@ import javax.swing.table.TableModel;
 import project.Select;
 
 /**
- * View all requests
+ * View all requests ACMS
  * @author GueyLing
  */
 public class SecurityOfficerPending extends javax.swing.JFrame {

@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
- * View visitor list on current date
+ * View visitor list on current date ACMS
  * @author GueyLing
  */
 public class SecurityGuardHome extends javax.swing.JFrame {

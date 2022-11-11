@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * View contingency report
+ * View contingency report ACMS
  *
  * @author GueyLing
  */
