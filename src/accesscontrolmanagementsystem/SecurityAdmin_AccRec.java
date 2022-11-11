@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * View access record ACMS
  *
  * @author Asus
 
@@ -135,77 +136,104 @@ public class SecurityAdmin_AccRec extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Direct users to view contingency report
+     *
+     * @param evt
+     */
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         setVisible(false);
-        SecurityAdmin_ContRec jf= new SecurityAdmin_ContRec();
+        SecurityAdmin_ContRec jf = new SecurityAdmin_ContRec();
         jf.setVisible(true);
         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_jPanel4MouseClicked
 
+    /**
+     * Display the access record
+     *
+     * @param evt
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' ");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-        while(rs.next()){
-            model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
-        }
-        rs.close();
-        }
-        catch(Exception e){
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
+            }
+            rs.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
 
+    /**
+     * Filter the records by month
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        int no = 0;
+
+        int no;
         String month = jComboBox1.getSelectedItem().toString();
         ResultSet rs;
-        if (month.equals("All Months")){
-        rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out'");
-        }else{
-        if (month.equals("January")){
-            no = 1;
-        }else if (month.equals("February")){
-            no = 2;
-        }else if (month.equals("March")){
-            no = 3;
-        }else if (month.equals("April")){
-            no = 4;
-        }else if (month.equals("May")){
-            no = 5;
-        }else if (month.equals("June")){
-            no = 6;
-        }else if (month.equals("July")){
-            no = 7;
-        }else if (month.equals("August")){
-            no = 8;
-        }else if (month.equals("September")){
-            no = 9;
-        }else if (month.equals("October")){
-            no = 10;
-        }else if (month.equals("November")){
-            no = 11;
-        }else{
-            no = 12;
+        if (month.equals("All Months")) {
+            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out'");
+        } else {
+            // select the month
+            switch (month) {
+                case "January":
+                    no = 1;
+                    break;
+                case "February":
+                    no = 2;
+                    break;
+                case "March":
+                    no = 3;
+                    break;
+                case "April":
+                    no = 4;
+                    break;
+                case "May":
+                    no = 5;
+                    break;
+                case "June":
+                    no = 6;
+                    break;
+                case "July":
+                    no = 7;
+                    break;
+                case "August":
+                    no = 8;
+                    break;
+                case "September":
+                    no = 9;
+                    break;
+                case "October":
+                    no = 10;
+                    break;
+                case "November":
+                    no = 11;
+                    break;
+                default:
+                    no = 12;
+                    break;
+            }
+            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND month(str_to_date(date, '%Y-%m-%d')) = " + no + " ");
         }
-        rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND month(str_to_date(date, '%Y-%m-%d')) = "+no+" ");
-        }
-        
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-        while(rs.next()){
-            model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
-        }
-        rs.close();
-        }
-        catch(Exception e){
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
+            }
+            rs.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -237,12 +265,10 @@ public class SecurityAdmin_AccRec extends javax.swing.JFrame {
 
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SecurityAdmin_AccRec();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new SecurityAdmin_AccRec();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 

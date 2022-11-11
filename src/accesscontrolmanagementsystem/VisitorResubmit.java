@@ -13,13 +13,14 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * Window to allow users to resubmit their application once rejected by the security officer
+ * Window to allow users to resubmit their application once rejected by the security officer. ACMS
  * @author GueyLing
  */
 public class VisitorResubmit extends javax.swing.JFrame {
     
     public int user_id;
     public int ticket_id;
+    public boolean successState = false;
     
     /**
      * Creates new form VisitorResubmit
@@ -80,8 +81,8 @@ public class VisitorResubmit extends javax.swing.JFrame {
 
         jLabel5.setText("To:");
 
-        jLabel6.setText("* DISCLAIMER:  Your access will be denied if you are more than 30 minutes late.");
         jLabel6.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel6.setText("* DISCLAIMER:  Your access will be denied if you are more than 30 minutes late.");
 
         jLabel7.setText("Reason:");
 
@@ -127,10 +128,10 @@ public class VisitorResubmit extends javax.swing.JFrame {
                             .addComponent(timePicker2, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE))
                         .addComponent(jLabel3)
                         .addComponent(jLabel2)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jTextField1)
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -204,6 +205,7 @@ public class VisitorResubmit extends javax.swing.JFrame {
             String Query;
             Query = "update visit_ticket set imageUrl = '"+imageUrl+"', date= '"+date+"', bookFrom= '"+bookFrom+"',bookTo= '"+bookTo+"',reason= '"+reason+"',status= 'pending' ,user_id= '"+user_id+"' where user_id = '"+user_id+"' and id='"+ticket_id+"'";
             InsertUpdateDelete.setData(Query, "Submitted Successfully");
+            successState = true;
             setVisible(false);
             VisitorTicketHistory jf1= new VisitorTicketHistory();
             jf1.setVisible(true);
@@ -259,8 +261,8 @@ public class VisitorResubmit extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private javax.swing.JLabel jLabel1;
+    public com.toedter.calendar.JDateChooser jDateChooser1;
+    public javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -269,10 +271,10 @@ public class VisitorResubmit extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JButton submitButton;
-    private com.github.lgooddatepicker.components.TimePicker timePicker1;
-    private com.github.lgooddatepicker.components.TimePicker timePicker2;
+    public javax.swing.JTextArea jTextArea1;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JButton submitButton;
+    public com.github.lgooddatepicker.components.TimePicker timePicker1;
+    public com.github.lgooddatepicker.components.TimePicker timePicker2;
     // End of variables declaration//GEN-END:variables
 }

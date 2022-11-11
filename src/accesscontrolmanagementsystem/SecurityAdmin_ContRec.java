@@ -10,7 +10,9 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
 /**
+ * View contingency report ACMS
  *
  * @author Asus
 
@@ -129,11 +131,6 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 290, 50));
 
         jPanel4.setBackground(new java.awt.Color(170, 215, 255));
-        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel4MouseClicked(evt);
-            }
-        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Contigency Report");
@@ -161,83 +158,96 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Allow users to filter the records by date and time
+     *
+     * @param evt
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        ResultSet rs = null;
+        ResultSet rs;
         String date;
-        try{
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        date = df.format(jDateChooser1.getDate());}
-        catch(Exception e){
-            date="";
+        try {
+            // select date
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            date = df.format(jDateChooser1.getDate());
+        } catch (Exception e) {
+            date = "";
         }
-        if(date.equals("")){
+        if (date.equals("")) {
             JOptionPane.showMessageDialog(null, "Please select a date.");
         }
+        // select time
         String enterTime = timePicker1.getText();
         String exitTime = timePicker2.getText();
-        if(enterTime.equals("")&& exitTime.equals("")){
-            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '"+date+"'");
-        }else{
-          if(enterTime.equals("")){
-            JOptionPane.showMessageDialog(null, "Please select FROM time.");
-            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '"+date+"'");
-        }else if(exitTime.equals("")){
-            JOptionPane.showMessageDialog(null, "Please select TO time.");
-            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '"+date+"'");
-        }else{
-            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND "
-                    + "visit_ticket.date = '"+date+"' AND ((STR_TO_DATE(visit_status.enter_time, '%h:%i %p') BETWEEN STR_TO_DATE('"+enterTime+"', '%h:%i %p') AND STR_TO_DATE('"+exitTime+"', '%h:%i %p'))\n" +
-   "OR (STR_TO_DATE(visit_status.exit_time, '%h:%i %p') BETWEEN STR_TO_DATE('"+enterTime+"', '%h:%i %p') AND STR_TO_DATE('"+exitTime+"', '%h:%i %p')))");
+        if (enterTime.equals("") && exitTime.equals("")) {
+            rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '" + date + "'");
+        } else {
+            if (enterTime.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please select FROM time.");
+                rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '" + date + "'");
+            } else if (exitTime.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please select TO time.");
+                rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND visit_ticket.date = '" + date + "'");
+            } else {
+                rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' AND "
+                        + "visit_ticket.date = '" + date + "' AND ((STR_TO_DATE(visit_status.enter_time, '%h:%i %p') BETWEEN STR_TO_DATE('" + enterTime + "', '%h:%i %p') AND STR_TO_DATE('" + exitTime + "', '%h:%i %p'))\n"
+                        + "OR (STR_TO_DATE(visit_status.exit_time, '%h:%i %p') BETWEEN STR_TO_DATE('" + enterTime + "', '%h:%i %p') AND STR_TO_DATE('" + exitTime + "', '%h:%i %p')))");
+            }
         }
-        }            
 
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-            while(rs.next()){
+        try {
+            while (rs.next()) {
                 model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
             }
             rs.close();
-        }
-        catch(Exception e){
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-
-    }//GEN-LAST:event_jPanel4MouseClicked
-
+    /**
+     * Direct users to view the access records
+     * @param evt 
+     */
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         setVisible(false);
-        SecurityAdmin_AccRec jf= new SecurityAdmin_AccRec();
+        SecurityAdmin_AccRec jf = new SecurityAdmin_AccRec();
         jf.setVisible(true);
         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_jPanel3MouseClicked
 
+    /**
+     * Display the contingency report
+     * @param evt 
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
         ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_status.status = 'checked out' ");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-        while(rs.next()){
-            model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
-        }
-        rs.close();
-        }
-        catch(Exception e){
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(1), rs.getString(4), rs.getString(9), rs.getString(21), rs.getString(22), rs.getString(12)});
+            }
+            rs.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
 
+    /**
+     * Refresh page
+     * @param evt 
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-                        setVisible(false);
-                        JFrame jf= new SecurityAdmin_ContRec();
-                        jf.setVisible(true);
-                        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);        // TODO add your handling code here:
+        setVisible(false);
+        JFrame jf = new SecurityAdmin_ContRec();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -268,13 +278,11 @@ public class SecurityAdmin_ContRec extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SecurityAdmin_ContRec();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new SecurityAdmin_ContRec();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-            }
         });
     }
 

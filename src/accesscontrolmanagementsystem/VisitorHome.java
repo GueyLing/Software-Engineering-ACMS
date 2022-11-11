@@ -14,12 +14,13 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * Visitor Home Page (Allows them to submit application for visit pass)
+ * Visitor Home Page (Allows them to submit application for visit pass) ACMS
  * @author GueyLing
  */
 public class VisitorHome extends javax.swing.JFrame {
 
     public int user_id;
+    public boolean successState = false;
 
     /**
      * Creates new form VisitorHome
@@ -60,6 +61,7 @@ public class VisitorHome extends javax.swing.JFrame {
         timePicker4 = new com.github.lgooddatepicker.components.TimePicker();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -88,6 +90,8 @@ public class VisitorHome extends javax.swing.JFrame {
         ticketHistoryPanel.add(jLabel3);
 
         jPanel1.add(ticketHistoryPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 290, 50));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 700));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -138,20 +142,7 @@ public class VisitorHome extends javax.swing.JFrame {
         jPanel2.add(timePicker3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 210, -1));
         jPanel2.add(timePicker4, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, 210, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1020, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 1020, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -163,9 +154,16 @@ public class VisitorHome extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         String imageUrl = jTextField1.getText();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String date = df.format(jDateChooser1.getDate());
-        String bookFrom = timePicker3.getText();
-        String bookTo = timePicker4.getText();
+        String date, bookFrom, bookTo;
+        try{
+        date = df.format(jDateChooser1.getDate());
+        bookFrom = timePicker3.getText();
+        bookTo = timePicker4.getText();
+        }catch(Exception e){
+            date = "";
+            bookFrom = "";
+            bookTo = "";
+        }
         String reason = jTextArea1.getText();
         String status = "pending";
         
@@ -174,8 +172,9 @@ public class VisitorHome extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please enter all the fields.");
         }else{
             String Query;
-            Query = "insert into visit_ticket values('"+imageUrl+"','"+date+"','"+bookFrom+"','"+bookTo+"','"+reason+"','"+status+"','0' ,'"+user_id+"','','0','')";
+            Query = "insert into visit_ticket values('"+imageUrl+"','"+date+"','"+bookFrom+"','"+bookTo+"','"+reason+"','"+status+"','0' ,'"+user_id+"','',NULL,'')";
             InsertUpdateDelete.setData(Query, "Submitted Successfully");
+            successState = true;
             setVisible(false);
             VisitorTicketHistory jf= new VisitorTicketHistory();
             jf.setVisible(true);
@@ -232,7 +231,7 @@ public class VisitorHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    public com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -247,11 +246,11 @@ public class VisitorHome extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JButton submitButton;
+    public javax.swing.JTextArea jTextArea1;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JButton submitButton;
     private javax.swing.JPanel ticketHistoryPanel;
-    private com.github.lgooddatepicker.components.TimePicker timePicker3;
-    private com.github.lgooddatepicker.components.TimePicker timePicker4;
+    public com.github.lgooddatepicker.components.TimePicker timePicker3;
+    public com.github.lgooddatepicker.components.TimePicker timePicker4;
     // End of variables declaration//GEN-END:variables
 }

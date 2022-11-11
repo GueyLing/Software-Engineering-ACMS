@@ -4,7 +4,8 @@
  */
 package accesscontrolmanagementsystem;
 
-import java.text.SimpleDateFormat; 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFrame;
 import project.*;
@@ -17,17 +18,22 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
- *
+ * View visitor list on current date ACMS
  * @author GueyLing
  */
 public class SecurityGuardHome extends javax.swing.JFrame {
 
     public int user_id;
+
     /**
      * Creates new form SecurityGuardHome
      */
     public SecurityGuardHome() {
         initComponents();
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String now = formatter.format(date);
+        jLabel5.setText(String.valueOf(now));
     }
 
     /**
@@ -152,22 +158,32 @@ public class SecurityGuardHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Direct users to view the visitor log
+     * @param evt 
+     */
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
         setVisible(false);
 
-        SecurityGuardVisitorLog jf= new SecurityGuardVisitorLog();
+        SecurityGuardVisitorLog jf = new SecurityGuardVisitorLog();
 
         jf.setVisible(true);
         jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jf.user_id = user_id;
     }//GEN-LAST:event_jPanel4MouseClicked
 
 
+    /**
+     * Display all visitors on current date
+     * @param evt 
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // get current date
         Date date = new Date();
-        Date currentTime = null, appointmentTime = null, checkoutTime = null;
+        Date currentTime = null, appointmentTime, checkoutTime;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String now = formatter.format(date);
-        
+        // get current time
         SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mma");
         String time = timeFormatter.format(date).toLowerCase();
         try {
@@ -175,89 +191,93 @@ public class SecurityGuardHome extends javax.swing.JFrame {
         } catch (ParseException ex) {
             Logger.getLogger(SecurityGuardHome.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        jLabel5.setText(String.valueOf(now));
-        ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_ticket.date = '"+now+"' ");
-  
-        try{
-        while(rs.next()){
-         //   model.addRow(new Object[]{rs.getString(7),rs.getString(1), rs.getString(4), rs.getString(6), rs.getString(14), rs.getString(10)+ " - "+ rs.getString(11), rs.getString(18)});
-            String setTime = rs.getString(10);
-            String endTime = rs.getString(11);
-            appointmentTime = timeFormatter.parse(setTime);
-            checkoutTime = timeFormatter.parse(endTime);
-        long differenceInMilliSeconds = currentTime.getTime() - appointmentTime.getTime();
-        long differenceInMilliSeconds2 = checkoutTime.getTime() - currentTime.getTime();
-        long differenceInHours= (differenceInMilliSeconds / (60 * 60 * 1000))% 24;
-        long differenceInMinutes = (differenceInMilliSeconds / (60 * 1000)) % 60;
-        long differenceInHours2= (differenceInMilliSeconds2 / (60 * 60 * 1000))% 24;
-        long differenceInMinutes2 = (differenceInMilliSeconds2 / (60 * 1000)) % 60;
-        int id = rs.getInt(14);
-        if (differenceInHours > 0 || differenceInMinutes > 30){
-            if (rs.getString(18).equals("not yet arrive")){
-                 String Query;
-          Query = "update visit_status set status = 'did not turn up' where ticket_id = "+id+" ";
-          InsertUpdateDelete.setDataWithoutJOption(Query);
+
+        ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_ticket.date = '" + now + "' ");
+
+        try {
+            while (rs.next()) {
+              
+                String setTime = rs.getString(10);
+                String endTime = rs.getString(11);
+                appointmentTime = timeFormatter.parse(setTime);
+                checkoutTime = timeFormatter.parse(endTime);
+                // calculate difference (in minutes) between current time and scheduled time
+                long differenceInMilliSeconds = currentTime.getTime() - appointmentTime.getTime();
+                long differenceInMilliSeconds2 = checkoutTime.getTime() - currentTime.getTime();
+                long differenceInHours = (differenceInMilliSeconds / (60 * 60 * 1000)) % 24;
+                long differenceInMinutes = (differenceInMilliSeconds / (60 * 1000)) % 60;
+                long differenceInHours2 = (differenceInMilliSeconds2 / (60 * 60 * 1000)) % 24;
+                long differenceInMinutes2 = (differenceInMilliSeconds2 / (60 * 1000)) % 60;
+                int id = rs.getInt(14);
+                // if late than 30 mintues from appointed time, change status to did not turn up
+                if (differenceInHours > 0 || differenceInMinutes > 30) {
+                    if (rs.getString(20).equals("not yet arrive")) {
+                        String Query;
+                        Query = "update visit_status set status = 'did not turn up' where ticket_id = " + id + " ";
+                        InsertUpdateDelete.setDataWithoutJOption(Query);
+                    }
+                }
+                // if did not check out after appointed time, check out automatically
+                if (differenceInHours2 < 0 || differenceInMinutes2 < 0) {
+                    if (rs.getString(20).equals("checked in")) {
+                        String Query;
+                        Query = "update visit_status set status = 'checked out', exit_time = '"+time+"', exit_time_guard_id = 17 where ticket_id = " + id + " ";
+                        InsertUpdateDelete.setDataWithoutJOption(Query);
+                    }
+                }
+
             }
-        }
-        if (differenceInHours2 < 0 || differenceInMinutes2 < 0){
-            if (rs.getString(18).equals("checked in")){
-                 String Query;
-          Query = "update visit_status set status = 'checked out' where ticket_id = "+id+" ";
-          InsertUpdateDelete.setDataWithoutJOption(Query);
-            }
-        }
-        
-        }
-        rs.close();
-        }
-        catch(Exception e){
+            rs.close();
+        } catch (SQLException | ParseException e) {
             JOptionPane.showMessageDialog(null, e);
-        } 
-        
-         ResultSet rs1 = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_ticket.date = '"+now+"' and visit_ticket.status = 'approved'");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
+        }
+
+        // display data
+        ResultSet rs1 = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id JOIN visit_status ON visit_ticket.id = visit_status.ticket_id WHERE visit_ticket.date = '" + now + "' and visit_ticket.status = 'approved'");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        try{
-        while(rs1.next()){
-            model.addRow(new Object[]{rs1.getString(7),rs1.getString(1), rs1.getString(4), rs1.getString(6), rs1.getString(14), rs1.getString(10)+ " - "+ rs1.getString(11), rs1.getString(20)});
-        }
-        rs1.close();
-        }
-        catch(Exception e){
+        try {
+            while (rs1.next()) {
+                model.addRow(new Object[]{rs1.getString(7), rs1.getString(1), rs1.getString(4), rs1.getString(6), rs1.getString(14), rs1.getString(10) + " - " + rs1.getString(11), rs1.getString(20)});
+            }
+            rs1.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
-        
+
     }//GEN-LAST:event_formComponentShown
 
+    /**
+     * Allow security guard to check in or check out
+     * @param evt 
+     */
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int index = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
         String value1 = model.getValueAt(index, 6).toString(); //status
         int value2 = Integer.parseInt(model.getValueAt(index, 0).toString());
         int ticket_id = Integer.parseInt(model.getValueAt(index, 4).toString());
-        
-        if (value1.equals("not yet arrive")|| value1.equals("checked in")){
-        ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id where users.id='"+value2+"' AND visit_ticket.id= '"+ticket_id+"' ");
-        try {
-            if(rs.next()){
-            String name = rs.getString(1);
-            String imageUrl = rs.getString(8);
-            setVisible(false);
-       
-        SecurityGuardVerifyVisitor jf= new SecurityGuardVerifyVisitor();
-        //jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        jf.setVisible(true);
-        jf.visitor_name(name);
-        jf.set_button_text(value1);
-        jf.set_image(imageUrl);
-        jf.ticket_id = ticket_id;
-        jf.user_id = user_id;
-        
+
+        if (value1.equals("not yet arrive") || value1.equals("checked in")) {
+            ResultSet rs = Select.getData("select * from users JOIN visit_ticket ON users.id = visit_ticket.user_id where users.id='" + value2 + "' AND visit_ticket.id= '" + ticket_id + "' ");
+            try {
+                if (rs.next()) {
+                    String name = rs.getString(1);
+                    String imageUrl = rs.getString(8);
+                    setVisible(false);
+
+                    SecurityGuardVerifyVisitor jf = new SecurityGuardVerifyVisitor();
+                    jf.setVisible(true);
+                    jf.visitor_name(name);
+                    jf.set_button_text(value1);
+                    jf.set_image(imageUrl);
+                    jf.ticket_id = ticket_id;
+                    jf.user_id = user_id;
+
+                }
+            } catch (IOException | SQLException e) {
+                JOptionPane.showMessageDialog(null, e);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -290,13 +310,12 @@ public class SecurityGuardHome extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SecurityGuardHome();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new SecurityGuardHome();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
+       
     }
 
 
@@ -306,7 +325,7 @@ public class SecurityGuardHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
 
     private javax.swing.JPanel jPanel1;

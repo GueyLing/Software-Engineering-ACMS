@@ -4,7 +4,9 @@
  */
 package accesscontrolmanagementsystem;
 
+import java.io.IOException;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,7 +20,7 @@ import javax.swing.table.TableModel;
 import project.Select;
 
 /**
- *
+ * Home page of security officer. View reminder of unhandled requests. ACMS
  * @author Li Ying
  */
 public class SecurityOfficerHome extends javax.swing.JFrame {
@@ -70,11 +72,6 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 170, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(170, 215, 255));
-        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel3MouseClicked(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel2.setText("Home");
@@ -132,11 +129,6 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
                 jTable1MouseClicked(evt);
             }
         });
-        jTable1.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jTable1ComponentShown(evt);
-            }
-        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 850, 310));
@@ -165,95 +157,103 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-
-    }//GEN-LAST:event_jPanel3MouseClicked
-
+    /**
+     * Direct users to view other requests
+     * @param evt 
+     */
     private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-      setVisible(false);
-      SecurityOfficerPending jf= new SecurityOfficerPending();
-      jf.setVisible(true);
-      jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-      jf.user_id = user_id;
+        setVisible(false);
+        SecurityOfficerPending jf = new SecurityOfficerPending();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jf.user_id = user_id;
     }//GEN-LAST:event_jPanel4MouseClicked
 
+    /**
+     * Handle requests (Approve or reject)
+     * @param evt 
+     */
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int index = jTable1.getSelectedRow();
         TableModel model = jTable1.getModel();
         int value1 = Integer.parseInt(model.getValueAt(index, 0).toString());
         String value2 = model.getValueAt(index, 1).toString();
         String value3 = model.getValueAt(index, 4).toString();
-        
-        ResultSet rs = Select.getData("select * from visit_ticket where id='"+value1+"'");
+
+        ResultSet rs = Select.getData("select * from visit_ticket where id='" + value1 + "'");
         try {
-            if(rs.next()){
-            String fromTime = rs.getString(3);
-            String toTime = rs.getString(4);
-            String reason = rs.getString(5);
-            int ticketId = Integer.parseInt(rs.getString(7));
-            String imageUrl = rs.getString(1);
-           
-        setVisible(false);
-        SecurityOfficerViewRequest jf= new SecurityOfficerViewRequest();
-        //jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        jf.setVisible(true);
-        jf.name(value2);
-        jf.date(value3);
-        jf.time(fromTime, toTime);
-        jf.reason(reason);
-        jf.set_image(imageUrl);
-        jf.ticket_id = ticketId;
-        jf.user_id = user_id;
-        jf.returnPage = 0;
-        
+            if (rs.next()) {
+                String fromTime = rs.getString(3);
+                String toTime = rs.getString(4);
+                String reason = rs.getString(5);
+                int ticketId = Integer.parseInt(rs.getString(7));
+                String imageUrl = rs.getString(1);
+                setVisible(false);
+                // new frame to approve or reject visit pass
+                SecurityOfficerViewRequest jf = new SecurityOfficerViewRequest();
+                jf.setVisible(true);
+                jf.name(value2);
+                jf.date(value3);
+                jf.time(fromTime, toTime);
+                jf.reason(reason);
+                jf.set_image(imageUrl);
+                jf.ticket_id = ticketId;
+                jf.user_id = user_id;
+                jf.returnPage = 0;
+
             }
-        } catch (Exception e) {
+        } catch (IOException | NumberFormatException | SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
-    private void jTable1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jTable1ComponentShown
-
-    }//GEN-LAST:event_jTable1ComponentShown
-
+    /**
+     * Direct users to view approved history
+     * @param evt 
+     */
     private void jPanel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel5MouseClicked
-      setVisible(false);
-      SecurityOfficerApproved jf= new SecurityOfficerApproved();
-      jf.setVisible(true);
-      jf.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-      jf.user_id = user_id;
+        setVisible(false);
+        SecurityOfficerApproved jf = new SecurityOfficerApproved();
+        jf.setVisible(true);
+        jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jf.user_id = user_id;
     }//GEN-LAST:event_jPanel5MouseClicked
 
+    /**
+     * Display all the unhandled requests near the due date. 
+     * @param evt 
+     */
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // get current date and format it
         Date dt = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String now = sdf.format(dt);
-        
+
         Calendar c = Calendar.getInstance();
         try {
             c.setTime(sdf.parse(now));
         } catch (ParseException ex) {
             Logger.getLogger(SecurityOfficerHome.class.getName()).log(Level.SEVERE, null, ex);
         }
-        c.add(Calendar.DATE, 3);  // number of days to add
-        String dueDate = sdf.format(c.getTime()); 
-        
-        ResultSet rs = Select.getData("select * from visit_ticket JOIN users on visit_ticket.user_id = users.id where visit_ticket.status = 'pending' AND str_to_date(date,'%Y-%m-%d')\n" +
-        "between\n" +
-        "str_to_date('"+now+"','%Y-%m-%d')\n" +
-        "and\n" +
-        "str_to_date('"+dueDate+"','%Y-%m-%d');");
-        DefaultTableModel model = (DefaultTableModel)jTable1.getModel();
-        model.setRowCount(0);
-        try{
-        while(rs.next()){
-            model.addRow(new Object[]{rs.getString(7), rs.getString(12), rs.getString(15), rs.getString(17), rs.getString(2), rs.getString(6)});
-        }
-        rs.close();
+        // add three days for the due date
+        c.add(Calendar.DATE, 3);  
+        String dueDate = sdf.format(c.getTime());
 
-        }
-        catch(Exception e){
+        // filter range of date
+        ResultSet rs = Select.getData("select * from visit_ticket JOIN users on visit_ticket.user_id = users.id where visit_ticket.status = 'pending' AND str_to_date(date,'%Y-%m-%d')\n"
+                + "between\n"
+                + "str_to_date('" + now + "','%Y-%m-%d')\n"
+                + "and\n"
+                + "str_to_date('" + dueDate + "','%Y-%m-%d');");
+        // display data
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        try {
+            while (rs.next()) {
+                model.addRow(new Object[]{rs.getString(7), rs.getString(12), rs.getString(15), rs.getString(17), rs.getString(2), rs.getString(6)});
+            }
+            rs.close();
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
@@ -287,12 +287,10 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
 
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new SecurityOfficerHome();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf = new SecurityOfficerHome();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
