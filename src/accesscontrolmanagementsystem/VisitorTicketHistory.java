@@ -159,7 +159,7 @@ public class VisitorTicketHistory extends javax.swing.JFrame {
         }
         rs.close();
         }
-        catch(Exception e){
+        catch(SQLException e){
             JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_formComponentShown
@@ -222,12 +222,10 @@ public class VisitorTicketHistory extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame jf= new VisitorTicketHistory();
-                jf.setVisible(true);
-                jf.setExtendedState(JFrame.MAXIMIZED_BOTH);  
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            JFrame jf= new VisitorTicketHistory();
+            jf.setVisible(true);
+            jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
         });
     }
 
