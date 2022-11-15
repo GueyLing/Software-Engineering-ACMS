@@ -184,7 +184,7 @@ public class Login extends javax.swing.JFrame {
         if (email.equals("") || password.equals("")) {
             JOptionPane.showMessageDialog(null, "Please enter all the fields.");
         } else {
-            ResultSet rs = Select.getData("select * from users where email='" + email + "' and password='" + password + "'and userType='" + userType + "'");
+            ResultSet rs = Select.getData("select * from users where binary email='" + email + "' and binary password='" + password + "'and userType='" + userType + "'");
             try {
                 // if validated (correct email and password)
                 if (rs.next()) {
