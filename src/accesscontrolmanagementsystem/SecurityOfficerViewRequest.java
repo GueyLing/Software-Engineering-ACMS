@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import project.InsertUpdateDelete;
 
 /**
- * JFrame to approve or reject visit pass
+ * JFrame to approve or reject visit pass ACMS
  *
  * @author GueyLing
  */

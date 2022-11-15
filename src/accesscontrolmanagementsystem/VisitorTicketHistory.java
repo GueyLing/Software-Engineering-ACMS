@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /**
- * View the tickets and status for the submitted applications
+ * View the tickets and status for the submitted applications. ACMS
  * @author GueyLing
  */
 public class VisitorTicketHistory extends javax.swing.JFrame {

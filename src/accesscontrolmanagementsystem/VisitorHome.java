@@ -14,7 +14,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * Visitor Home Page (Allows them to submit application for visit pass)
+ * Visitor Home Page (Allows them to submit application for visit pass) ACMS
  * @author GueyLing
  */
 public class VisitorHome extends javax.swing.JFrame {

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * View visitor log
+ * View visitor log ACMS
  * @author GueyLing
  */
 public class SecurityGuardVisitorLog extends javax.swing.JFrame {

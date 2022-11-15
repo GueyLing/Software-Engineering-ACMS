@@ -20,8 +20,8 @@ import javax.swing.table.TableModel;
 import project.Select;
 
 /**
- * Home page of security officer. View reminder of unhandled requests.
- * @author GueyLing
+ * Home page of security officer. View reminder of unhandled requests. ACMS
+ * @author Li Ying
  */
 public class SecurityOfficerHome extends javax.swing.JFrame {
 
@@ -57,6 +57,7 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1440, 1000));
+
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -98,6 +99,7 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
             }
         });
 
+
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Approved History");
         jPanel5.add(jLabel6);
@@ -109,6 +111,7 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel4.setText("Reminder of Unhandled Requests");
+
         jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 80, -1, -1));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -116,9 +119,11 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
 
             },
             new String [] {
+
                 "Ticket No.", "Name", "Phone Number", "IC No.", "Visit Date", "Status"
             }
         ));
+
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -129,6 +134,7 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 850, 310));
         jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, -1, -1));
 
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,12 +142,16 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
+
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+
         );
 
         pack();
@@ -275,6 +285,7 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
         }
         //</editor-fold>
 
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             JFrame jf = new SecurityOfficerHome();
@@ -290,12 +301,15 @@ public class SecurityOfficerHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+
     private javax.swing.JScrollPane jScrollPane1;
+
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

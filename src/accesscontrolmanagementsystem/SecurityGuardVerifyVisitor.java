@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import project.InsertUpdateDelete;
 /**
- * Allow security to verify users and perform check in / check out
+ * Allow security to verify users and perform check in / check out ACMS
  * @author GueyLing
  */
 public class SecurityGuardVerifyVisitor extends javax.swing.JFrame {

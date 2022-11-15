@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import project.InsertUpdateDelete;
 
 /**
- * Sign Up Page (Create new visitor account)
+ * Sign Up Page (Create new visitor account) ACMS
  * @author GueyLing
  */
 public class SignUp extends javax.swing.JFrame {
